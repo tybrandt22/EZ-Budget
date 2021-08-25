@@ -30,6 +30,7 @@ class TransactionViewController: UIViewController {
             deleteView.warningText = "WARNING: This will delete the transaction. Proceed?"
             deleteView.transactional = true
             deleteView.itemTitle = transaction!.name
+            deleteView.tranCategory = transaction!.category
         default:
             return
         }

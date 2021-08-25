@@ -12,6 +12,7 @@ class DeletionViewController: UIViewController {
     var categorical = false
     var transactional = false
     var itemTitle = "No Category"
+    var tranCategory = "No Category"
     var warningText = "WARNING: This will delete all transactions. Proceed?"
     @IBOutlet weak var confirmButton: UIButton!
     @IBOutlet weak var warningLabel: UILabel!

@@ -56,35 +56,15 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    @IBAction func deleteTransaction(sender: UIStoryboardSegue) {
-        if let sourceView = sender.source as? TransactionTableViewController {
-            if sourceView.deletedTransaction {
-                categories = sourceView.categories
-                if sourceView.transactions[0].name != "No Transactions" {
-                    transactions = sourceView.transactions
-                } else {
-                    transactions = [Transaction]()
-                }
-                saveData()
-                categoryTable.reloadData()
-                var total = 0.0
-                for category in categories {
-                    total += category.price
-                }
-                totalLabel.text = String(format: "Total: $%.2f", total)
-            }
-        }
-    }
-    
     @IBAction func deleteData(sender: UIStoryboardSegue) {
         if let sourceView = sender.source as? DeletionViewController {
-            if sourceView.confirmed && !sourceView.categorical {
+            if sourceView.confirmed && !sourceView.categorical && !sourceView.transactional {
                 categories = [Category]()
                 transactions = [Transaction]()
                 saveData()
                 categoryTable.reloadData()
                 totalLabel.text = "Total: $0.00"
-            } else if sourceView.confirmed {
+            } else if sourceView.confirmed && !sourceView.transactional {
                 var i = 0
                 for transaction in transactions {
                     if transaction.category == sourceView.itemTitle {
@@ -97,6 +77,27 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
                 for category in categories {
                     if category.name == sourceView.itemTitle {
                         categories.remove(at: i)
+                        break
+                    }
+                    i += 1
+                }
+                saveData()
+                categoryTable.reloadData()
+                var total = 0.0
+                for category in categories {
+                    total += category.price
+                }
+                totalLabel.text = String(format: "Total: $%.2f", total)
+            } else if sourceView.confirmed {
+                var i = 0
+                for transaction in transactions {
+                    if transaction.name == sourceView.itemTitle {
+                        for category in categories {
+                            if category.name == sourceView.tranCategory {
+                                category.price -= transaction.price
+                            }
+                        }
+                        transactions.remove(at: i)
                         break
                     }
                     i += 1

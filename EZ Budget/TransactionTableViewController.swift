@@ -43,6 +43,9 @@ class TransactionTableViewController: UITableViewController {
             cell.price.text = String(format: "$%.2f", transaction.price)
         }
         cell.date.text = transaction.date
+        if transaction.name == "No Transactions" {
+            cell.isUserInteractionEnabled = false
+        }
         return cell
     }
     
